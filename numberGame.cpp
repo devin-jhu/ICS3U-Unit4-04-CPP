@@ -1,24 +1,27 @@
 // Copyright (C) 2022 Devin Jhu All rights reserved
 //
 // Created by Devin Jhu
-// Created on March 2022
+// Created on May 2022
 // The number game
 
 #include <iostream>
 #include <random>
+#include <string>
 
 
 int main() {
     // this function is a guessing game
-    int NUMBER_ANSWER;
+    int guess;
+    int numberAnswer;
+    int counter = 1;
+    std::string guessString;
 
     std::random_device rseed;
     // mersenne_twister
     std::mt19937 rgen(rseed());
-    // randome number between [1,9]
+    // random number between [1,9]
     std::uniform_int_distribution <int> idist(1 , 9);
-    NUMBER_ANSWER = idist(rgen);
-    int GUESS;
+    numberAnswer = idist(rgen);
 
     std::cout << "The number game";
     std::cout << "" << std::endl;
@@ -26,14 +29,31 @@ int main() {
     // input
     std::cout << "" << std::endl;
     std::cout << "enter number: ";
-    std::cin >> GUESS;
+    std::cin >> guessString;
 
-    // process
-    if (GUESS == NUMBER_ANSWER) {
-        std::cout << "You win!";
-    } else {
-        std::cout << "You lose :(";
+    // process & output
+    while (true) {
+        try {
+            guess = std::stoi(guessString);
+            if (guess == numberAnswer) {
+                break;
+            } else if (guess > numberAnswer) {
+                std::cout << "Guess lower" << std::endl;
+            } else if (guess < numberAnswer) {
+                std::cout << "Guess higher" << std::endl;
+            } else {
+                std::cout << "what happened" << std::endl;
+            }
+        } catch (std::invalid_argument) {
+        std::cout << "not a number" << std::endl;
+        }
+
+        std::cout << "Try Again: ";
+        std::cin >> guessString;
+        counter++;
     }
-    std::cout << "" << std::endl;
-    std::cout << "Done.";
+
+    // End of game output
+    std::cout << "You win! It took " << counter << " tries." << std::endl;
+    std::cout << "\nDone." << std::endl;
 }
